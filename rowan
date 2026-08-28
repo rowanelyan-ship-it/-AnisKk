@@ -1,0 +1,121 @@
+node_modules
+dist
+.DS_Store
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+    <title>أنيسك | Anisk</title>
+    <meta name="description" content="رفيقك في طريقك إلى الله" />
+    <meta name="theme-color" content="#2D3D2C" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="أنيسك" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./src/main.jsx"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/sw.js").catch(() => {});
+        });
+      }
+    </script>
+  </body>
+</html>
+
+{
+  "name": "anisk",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "lucide-react": "^0.383.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vite": "^5.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1"
+  }
+}
+
+# أنيسك | Anisk
+
+## تشغيل محلي (للتجربة على الكمبيوتر)
+```
+npm install
+npm run dev
+```
+
+## نشر حقيقي (خطوة تخلي التطبيق يشتغل على أي موبايل)
+أسهل طريقة مجانية: Vercel
+
+1. اعملي حساب مجاني على vercel.com (تقدري تسجّلي دخول بحساب GitHub مباشرة).
+2. ارفعي هذا المجلد على GitHub (repo جديد)، أو استخدمي "Vercel CLI" لو مبرمج بيساعدك:
+   ```
+   npm i -g vercel
+   vercel
+   ```
+3. Vercel هيبني المشروع تلقائيًا (Framework: Vite) ويديكي رابط دائم زي:
+   `https://anisk.vercel.app`
+4. افتحي الرابط من متصفح الموبايل (Chrome على أندرويد بالذات) — هيظهر تلقائيًا اقتراح
+   "تثبيت التطبيق" (Install App)، مش مجرد "إضافة اختصار". لما تثبّتيه:
+   - هيظهر كأيقونة تطبيق حقيقية في قائمة التطبيقات
+   - هيفتح بدون شريط المتصفح (شاشة كاملة)
+   - هيشتغل جزئيًا بدون إنترنت (القرآن كامل محفوظ محليًا)
+   - البيانات (الصلوات، الأذكار، التقدّم) هتتحفظ فعليًا على الجهاز
+
+هذا "PWA حقيقي" — مش اختصار لصفحة ويب، تطبيق مثبَّت فعليًا. على آيفون (Safari) التثبيت أبسط شوية
+(زر "إضافة إلى الشاشة الرئيسية" لكن بواجهة تطبيق كاملة الشاشة برضو).
+
+## تفعيل "اسأل أنيسك AI" بعد النشر — خطوة إضافية مطلوبة
+ميزة الذكاء الاصطناعي محتاجة مفتاح API حقيقي عشان تشتغل بره معاينة Claude. الخطوات:
+
+1. اعملي حساب على console.anthropic.com واحصلي على مفتاح API (Get API Key).
+2. من لوحة تحكم مشروعك على Vercel: **Settings → Environment Variables**.
+3. أضيفي متغيّر باسم `ANTHROPIC_API_KEY` وقيمته المفتاح اللي جبتيه.
+4. اعملي **Redeploy** للمشروع (من تبويب Deployments → آخر نشر → Redeploy).
+
+المفتاح ده بيفضل على السيرفر بس (جوه `api/ai.js`) ومحدش يقدر يشوفه من كود الموقع —
+ده السبب في وجود الخطوة دي أصلًا بدل ما أحط المفتاح في الكود مباشرة (ده كان هيبقى غير آمن
+لأي حد يفتح الموقع).
+
+بدون المفتاح ده، باقي التطبيق (المصحف، الصلاة، الأذكار، الصوت) هيشتغل عادي تمامًا —
+بس شاشة "اسأل أنيسك AI" هتوريكي رسالة واضحة تقولك إن المفتاح ناقص، بدل ما تفشل بصمت.
+
+## لو عايزة تطبيق فعلي على Google Play / App Store
+ده خطوة إضافية بعد النشر، عن طريق أداة اسمها **Capacitor**:
+```
+npm install @capacitor/core @capacitor/cli @capacitor/android
+npx cap init
+npx cap add android
+npm run build
+npx cap sync
+npx cap open android
+```
+ده هيفتح المشروع في Android Studio، ومنه تقدري تعملي بناء ملف APK حقيقي تقدري تنزّليه
+مباشرة أو ترفعيه على متجر Google Play. ده محتاج تثبيت Android Studio على الكمبيوتر
+(أداة مجانية من جوجل)، وده الجزء اللي محتاج جهاز حقيقي أو مبرمج يساعد فيه — الكود جاهز
+تمامًا لهذه الخطوة.
+
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+  plugins: [react()],
+});
